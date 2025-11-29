@@ -98,66 +98,67 @@ const BarcodeGenerator = () => {
   <head>
     <title>Print Barcodes - DT38x25</title>
     <style>
-      @page {
-        size: 38mm 25mm; /* FIXED LABEL SIZE */
-        margin: 0;
-      }
+@page {
+  size: 38mm 25mm; /* FIXED LABEL SIZE */
+  margin: 0;
+}
 
-      body {
-        margin: 0;
-        padding: 0;
-        width: 38mm;
-        height: 25mm;
-        font-family: Arial, sans-serif;
-      }
+body {
+  margin: 0;
+  padding: 0;
+  width: 38mm;
+  height: 25mm;
+  font-family: Arial, sans-serif;
+}
 
-      .barcode-print-item {
-        width: 38mm;
-        height: 25mm;      /* EXACT HEIGHT */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 1mm;       /* LIGHT PADDING */
-        overflow: hidden;
-        page-break-after: always;
-      }
+.barcode-print-item {
+  width: 38mm;
+  height: 25mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.5mm;      /* SMALL padding */
+  overflow: hidden;
+  page-break-after: always;
+}
 
-      .barcode-header h3 {
-        margin: 0;
-        font-size: 6pt;
-        font-weight: bold;
-        text-align: center;
-        width: 100%;
-        line-height: 1.1;
-      }
+.barcode-header h3 {
+  margin: 0;
+  font-size: 5pt;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+  line-height: 1.1;
+}
 
-      .product-name {
-        font-size: 5pt;
-        text-align: center;
-        margin-top: 0.3mm;
-        line-height: 1.1;
-        width: 100%;
-      }
+.product-name {
+  font-size: 4pt;
+  text-align: center;
+  margin: 0.2mm 0;
+  line-height: 1.1;
+}
 
-      .product-amount {
-        font-size: 6pt;
-        font-weight: bold;
-        text-align: center;
-        margin: 0.4mm 0;
-        line-height: 1.1;
-      }
+.product-amount {
+  font-size: 6pt;
+  font-weight: bold;
+  text-align: center;
+  margin: 0.2mm 0;
+  line-height: 1.1;
+}
 
-      .barcode-container {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-      }
+.barcode-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 0.3mm;
+}
 
-      .barcode-container svg {
-        width: 100%;
-        height: 10mm; /* FIT BARCODE PROPERLY */
-      }
+.barcode-container svg {
+  width: 100%;
+  height: 8mm !important; /* perfect fit */
+}
+
     </style>
   </head>
   <body>
