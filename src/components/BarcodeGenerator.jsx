@@ -6,7 +6,7 @@ const BarcodeGenerator = () => {
   // Load last barcode from localStorage or start from 1000000000000
   const getInitialBarcode = () => {
     const saved = localStorage.getItem("lastBarcode");
-    return saved ? parseInt(saved, 10) : 1000000000000;
+    return saved ? parseInt(saved, 10) : 10000000000;
   };
 
   const [formData, setFormData] = useState({
@@ -210,9 +210,9 @@ body {
   };
 
   const handleResetBarcode = () => {
-    if (window.confirm("Reset barcode counter to 1000000000000?")) {
-      setCurrentBarcode(1000000000000);
-      localStorage.setItem("lastBarcode", "1000000000000");
+    if (window.confirm("Reset barcode counter to 10000000000?")) {
+      setCurrentBarcode(10000000000);
+      localStorage.setItem("lastBarcode", "10000000000");
     }
   };
 
@@ -220,7 +220,7 @@ body {
     const newValue = e.target.value;
     // Only update if it's a valid number
     if (newValue === "" || (!isNaN(newValue) && parseInt(newValue) >= 0)) {
-      const barcodeNum = newValue === "" ? 1000000000000 : parseInt(newValue);
+      const barcodeNum = newValue === "" ? 10000000000 : parseInt(newValue);
       setCurrentBarcode(barcodeNum);
       localStorage.setItem("lastBarcode", barcodeNum.toString());
     }
@@ -329,8 +329,8 @@ body {
                 <Barcode
                   value={generatedBarcode.barcode.toString()}
                   format="CODE128"
-                  width={2}
-                  height={80}
+                  width={3}
+                  height={90}
                   displayValue={true}
                   fontSize={12}
                   margin={5}
