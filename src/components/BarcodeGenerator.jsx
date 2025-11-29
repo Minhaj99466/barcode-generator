@@ -151,18 +151,39 @@ body {
   line-height: 1.1;
 }
 
-/* BARCODE */
-.barcode-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;           /* Ensures barcode is centered */
-  margin-top: 0.5mm;
-}
-
-.barcode-container svg {
-  height: 14mm !important;   /* better */
-}
+ /* BARCODE */
+ .barcode-container {
+   width: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   margin-top: 0.5mm;
+   padding: 0 3mm;                /* Quiet zone - essential for scanning */
+ }
+ 
+ .barcode-container svg {
+   height: 14mm !important;
+   max-width: 100%;
+   display: block;
+   background: #ffffff !important;
+ }
+ 
+ /* Only make barcode bars black, not the background */
+ .barcode-container svg path {
+   fill: #000000 !important;
+   stroke: #000000 !important;
+   stroke-width: 1 !important;
+ }
+ 
+ .barcode-container svg line {
+   stroke: #000000 !important;
+   stroke-width: 2.5 !important;
+ }
+ 
+ /* Barcode text */
+ .barcode-container svg text {
+   fill: #000000 !important;
+ }
 
 
     </style>
@@ -329,11 +350,11 @@ body {
                 <Barcode
                   value={generatedBarcode.barcode.toString()}
                   format="CODE128"
-                  width={3}
+                  width={2.5}
                   height={90}
                   displayValue={true}
                   fontSize={12}
-                  margin={5}
+                  margin={20}
                   background="#ffffff"
                   lineColor="#000000"
                   renderer="svg"
