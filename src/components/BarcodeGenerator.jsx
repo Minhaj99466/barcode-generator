@@ -121,7 +121,7 @@ const BarcodeGenerator = () => {
               display: flex;
               flex-direction: column;
               align-items: center;
-              justify-content: flex-start;
+              justify-content: center;
               padding: 0;
               margin: 0;
               background: #fff;
@@ -135,10 +135,10 @@ const BarcodeGenerator = () => {
             }
             .barcode-header h3 {
               margin: 0;
-              padding: 0.5mm 0 0 0;
+              padding: 0;
               font-size: 7pt;
               font-weight: bold;
-              line-height: 1.1;
+              line-height: 1.2;
               color: #000;
               text-align: center;
               word-wrap: break-word;
@@ -146,10 +146,10 @@ const BarcodeGenerator = () => {
             }
             .product-name {
               font-size: 6pt;
-              margin: 0.3mm 0 0 0;
+              margin: 0.4mm 0 0 0;
               padding: 0;
               color: #333;
-              line-height: 1.1;
+              line-height: 1.2;
               text-align: center;
               word-wrap: break-word;
               width: 100%;
@@ -158,9 +158,9 @@ const BarcodeGenerator = () => {
               font-size: 7pt;
               font-weight: bold;
               color: #000;
-              margin: 0.3mm 0 0 0;
+              margin: 0.4mm 0 0 0;
               padding: 0;
-              line-height: 1.1;
+              line-height: 1.2;
               text-align: center;
               width: 100%;
             }
@@ -169,20 +169,20 @@ const BarcodeGenerator = () => {
               justify-content: center;
               align-items: center;
               width: 100%;
-              margin: 0.5mm 0 0 0;
+              margin: 0.6mm 0 0 0;
               padding: 0;
             }
             .barcode-container svg {
               max-width: 100%;
-              max-height: 12mm;
+              max-height: 11mm;
               height: auto;
             }
             .barcode-footer {
               font-size: 6pt;
               color: #666;
-              margin: 0.3mm 0 0 0;
+              margin: 0.4mm 0 0 0;
               padding: 0;
-              line-height: 1.1;
+              line-height: 1.2;
               text-align: center;
               width: 100%;
             }
