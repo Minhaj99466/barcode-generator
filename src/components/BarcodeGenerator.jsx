@@ -1,56 +1,56 @@
-import React, { useState, useEffect, useRef } from 'react'
-import Barcode from 'react-barcode'
-import './BarcodeGenerator.css'
+import React, { useState, useEffect, useRef } from "react";
+import Barcode from "react-barcode";
+import "./BarcodeGenerator.css";
 
 const BarcodeGenerator = () => {
   // Load last barcode from localStorage or start from 1000000000000
   const getInitialBarcode = () => {
-    const saved = localStorage.getItem('lastBarcode')
-    return saved ? parseInt(saved, 10) : 1000000000000
-  }
+    const saved = localStorage.getItem("lastBarcode");
+    return saved ? parseInt(saved, 10) : 1000000000000;
+  };
 
   const [formData, setFormData] = useState({
-    companyName: '',
-    productName: '',
-    amount: '',
-    printQuantity: '1',
-  })
+    companyName: "",
+    productName: "",
+    amount: "",
+    printQuantity: "1",
+  });
 
-  const barcodeSvgRef = useRef(null)
-  const [currentBarcode, setCurrentBarcode] = useState(getInitialBarcode())
-  const [generatedBarcode, setGeneratedBarcode] = useState(null)
+  const barcodeSvgRef = useRef(null);
+  const [currentBarcode, setCurrentBarcode] = useState(getInitialBarcode());
+  const [generatedBarcode, setGeneratedBarcode] = useState(null);
   const [productHistory, setProductHistory] = useState(() => {
-    const saved = localStorage.getItem('productHistory')
-    return saved ? JSON.parse(saved) : []
-  })
+    const saved = localStorage.getItem("productHistory");
+    return saved ? JSON.parse(saved) : [];
+  });
 
   // Save barcode to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('lastBarcode', currentBarcode.toString())
-  }, [currentBarcode])
+    localStorage.setItem("lastBarcode", currentBarcode.toString());
+  }, [currentBarcode]);
 
   // Save product history to localStorage
   useEffect(() => {
-    localStorage.setItem('productHistory', JSON.stringify(productHistory))
-  }, [productHistory])
+    localStorage.setItem("productHistory", JSON.stringify(productHistory));
+  }, [productHistory]);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleGenerate = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!formData.companyName || !formData.productName || !formData.amount) {
-      alert('Please fill in all fields')
-      return
+      alert("Please fill in all fields");
+      return;
     }
 
-    const printQty = parseInt(formData.printQuantity) || 1
+    const printQty = parseInt(formData.printQuantity) || 1;
 
     const product = {
       id: Date.now(),
@@ -60,177 +60,164 @@ const BarcodeGenerator = () => {
       barcode: currentBarcode,
       printQuantity: printQty,
       date: new Date().toLocaleString(),
-    }
+    };
 
-    setGeneratedBarcode(product)
-    setProductHistory((prev) => [product, ...prev])
+    setGeneratedBarcode(product);
+    setProductHistory((prev) => [product, ...prev]);
 
     // Auto-increment barcode for next product
-    setCurrentBarcode((prev) => prev + 1)
+    setCurrentBarcode((prev) => prev + 1);
 
     // Reset form
     setFormData({
       companyName: formData.companyName, // Keep company name
-      productName: '',
-      amount: '',
-      printQuantity: '1',
-    })
-  }
+      productName: "",
+      amount: "",
+      printQuantity: "1",
+    });
+  };
 
   const handlePrint = () => {
-    if (!generatedBarcode) return
-    
+    if (!generatedBarcode) return;
+
     // Get the SVG from the rendered react-barcode component
-    const barcodeSvg = barcodeSvgRef.current?.querySelector('svg')
+    const barcodeSvg = barcodeSvgRef.current?.querySelector("svg");
     if (!barcodeSvg) {
-      alert('Barcode not found. Please generate a barcode first.')
-      return
+      alert("Barcode not found. Please generate a barcode first.");
+      return;
     }
-    
+
     // Create a print window with multiple copies
-    const printWindow = window.open('', '_blank')
-    const quantity = generatedBarcode.printQuantity || 1
-    const barcodeSvgHtml = barcodeSvg.outerHTML
-    
+    const printWindow = window.open("", "_blank");
+    const quantity = generatedBarcode.printQuantity || 1;
+    const barcodeSvgHtml = barcodeSvg.outerHTML;
+
     let printContent = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Print Barcodes - DT38X25</title>
-          <style>
-            @page {
-              size: 38mm 42mm;
-              margin: 0;
-            }
-            * {
-              margin: 0;
-              padding: 0;
-              box-sizing: border-box;
-            }
-            body {
-              font-family: Arial, sans-serif;
-              margin: 0;
-              padding: 0;
-              width: 38mm;
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Print Barcodes - DT38x25</title>
+    <style>
+      @page {
+        size: 38mm 25mm; /* FIXED LABEL SIZE */
+        margin: 0;
+      }
 
-              overflow: hidden;
-            }
-            .barcode-print-item {
-              width: 38mm;
+      body {
+        margin: 0;
+        padding: 0;
+        width: 38mm;
+        height: 25mm;
+        font-family: Arial, sans-serif;
+      }
 
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              justify-content: center;
-              padding: 1.5mm;
-              background: #fff;
-              page-break-after: always;
-              page-break-inside: avoid;
-            }
-            .barcode-header h3 {
-              margin: 0;
-              font-size: 7pt;
-              font-weight: bold;
-              line-height: 1.1;
-              color: #000;
-              text-align: center;
-              word-wrap: break-word;
-              width: 100%;
-            }
-            .product-name {
-              font-size: 6pt;
-              color: #333;
-                       line-height: 1.1;
-              text-align: center;
-              word-wrap: break-word;
-              width: 100%;
-            }
-            .product-amount {
-              font-size: 7pt;
-              font-weight: bold;
-              color: #000;
-              margin: 0.5mm 0 0 0;
-              line-height: 1.1;
-              text-align: center;
-            }
-            .barcode-container {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              width: 100%;
-            }
-            .barcode-container svg {
-              max-width: 100%;
-              max-height: 12mm;
-              height: auto;
-            }
-            .barcode-footer {
-              font-size: 6pt;
-              color: #666;
-              margin-top: 0.5mm;
-              line-height: 1.1;
-              text-align: center;
-              width: 100%;
-            }
-          </style>
-        </head>
-        <body>
-    `
-    
+      .barcode-print-item {
+        width: 38mm;
+        height: 25mm;      /* EXACT HEIGHT */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1mm;       /* LIGHT PADDING */
+        overflow: hidden;
+        page-break-after: always;
+      }
+
+      .barcode-header h3 {
+        margin: 0;
+        font-size: 6pt;
+        font-weight: bold;
+        text-align: center;
+        width: 100%;
+        line-height: 1.1;
+      }
+
+      .product-name {
+        font-size: 5pt;
+        text-align: center;
+        margin-top: 0.3mm;
+        line-height: 1.1;
+        width: 100%;
+      }
+
+      .product-amount {
+        font-size: 6pt;
+        font-weight: bold;
+        text-align: center;
+        margin: 0.4mm 0;
+        line-height: 1.1;
+      }
+
+      .barcode-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .barcode-container svg {
+        width: 100%;
+        height: 10mm; /* FIT BARCODE PROPERLY */
+      }
+    </style>
+  </head>
+  <body>
+`;
+
     for (let i = 0; i < quantity; i++) {
       printContent += `
-        <div class="barcode-print-item">
-          <div class="barcode-header">
-            <h3>${generatedBarcode.companyName}</h3>
-          </div>
-          <p class="product-name">${generatedBarcode.productName}</p>
-          <p class="product-amount">${parseFloat(generatedBarcode.amount).toFixed(2)}</p>
-          <div class="barcode-container">
-            ${barcodeSvgHtml}
-          </div>
-
-        </div>
-      `
+    <div class="barcode-print-item">
+      <div class="barcode-header">
+        <h3>${generatedBarcode.companyName}</h3>
+      </div>
+      <p class="product-name">${generatedBarcode.productName}</p>
+      <p class="product-amount">${parseFloat(generatedBarcode.amount).toFixed(
+        2
+      )}</p>
+      <div class="barcode-container">
+        ${barcodeSvgHtml}
+      </div>
+    </div>
+  `;
     }
-    
+
     printContent += `
-        </body>
-      </html>
-    `
-    
-    printWindow.document.write(printContent)
-    printWindow.document.close()
-    
+  </body>
+</html>
+`;
+
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+
     // Wait for content to load, then print
     setTimeout(() => {
-      printWindow.print()
-      printWindow.close()
-    }, 250)
-  }
+      printWindow.print();
+      printWindow.close();
+    }, 250);
+  };
 
   const handleClearHistory = () => {
-    if (window.confirm('Are you sure you want to clear all product history?')) {
-      setProductHistory([])
-      localStorage.removeItem('productHistory')
+    if (window.confirm("Are you sure you want to clear all product history?")) {
+      setProductHistory([]);
+      localStorage.removeItem("productHistory");
     }
-  }
+  };
 
   const handleResetBarcode = () => {
-    if (window.confirm('Reset barcode counter to 1000000000000?')) {
-      setCurrentBarcode(1000000000000)
-      localStorage.setItem('lastBarcode', '1000000000000')
+    if (window.confirm("Reset barcode counter to 1000000000000?")) {
+      setCurrentBarcode(1000000000000);
+      localStorage.setItem("lastBarcode", "1000000000000");
     }
-  }
+  };
 
   const handleBarcodeChange = (e) => {
-    const newValue = e.target.value
+    const newValue = e.target.value;
     // Only update if it's a valid number
-    if (newValue === '' || (!isNaN(newValue) && parseInt(newValue) >= 0)) {
-      const barcodeNum = newValue === '' ? 1000000000000 : parseInt(newValue)
-      setCurrentBarcode(barcodeNum)
-      localStorage.setItem('lastBarcode', barcodeNum.toString())
+    if (newValue === "" || (!isNaN(newValue) && parseInt(newValue) >= 0)) {
+      const barcodeNum = newValue === "" ? 1000000000000 : parseInt(newValue);
+      setCurrentBarcode(barcodeNum);
+      localStorage.setItem("lastBarcode", barcodeNum.toString());
     }
-  }
+  };
 
   return (
     <div className="barcode-generator">
@@ -302,7 +289,9 @@ const BarcodeGenerator = () => {
             min="0"
             placeholder="Enter barcode number"
           />
-          <small className="barcode-hint">Next product will use: {currentBarcode + 1}</small>
+          <small className="barcode-hint">
+            Next product will use: {currentBarcode + 1}
+          </small>
         </div>
 
         <div className="form-actions">
@@ -312,8 +301,7 @@ const BarcodeGenerator = () => {
           <button
             type="button"
             onClick={handleResetBarcode}
-            className="btn btn-secondary"
-          >
+            className="btn btn-secondary">
             Reset Counter
           </button>
         </div>
@@ -325,7 +313,9 @@ const BarcodeGenerator = () => {
             <div className="barcode-header">
               <h3>{generatedBarcode.companyName}</h3>
               <p className="product-name">{generatedBarcode.productName}</p>
-              <p className="product-amount">${parseFloat(generatedBarcode.amount).toFixed(2)}</p>
+              <p className="product-amount">
+                ${parseFloat(generatedBarcode.amount).toFixed(2)}
+              </p>
             </div>
             <div className="barcode-wrapper zebra-barcode" ref={barcodeSvgRef}>
               {generatedBarcode.barcode && (
@@ -345,11 +335,14 @@ const BarcodeGenerator = () => {
             </div>
             <div className="barcode-footer">
               <p>Barcode: {generatedBarcode.barcode}</p>
-              <p className="print-quantity-info">Print Quantity: {generatedBarcode.printQuantity}</p>
+              <p className="print-quantity-info">
+                Print Quantity: {generatedBarcode.printQuantity}
+              </p>
             </div>
           </div>
           <button onClick={handlePrint} className="btn btn-print">
-            🖨️ Print {generatedBarcode.printQuantity} {generatedBarcode.printQuantity === 1 ? 'Copy' : 'Copies'}
+            🖨️ Print {generatedBarcode.printQuantity}{" "}
+            {generatedBarcode.printQuantity === 1 ? "Copy" : "Copies"}
           </button>
         </div>
       )}
@@ -358,10 +351,7 @@ const BarcodeGenerator = () => {
         <div className="product-history">
           <div className="history-header">
             <h3>Product History</h3>
-            <button
-              onClick={handleClearHistory}
-              className="btn btn-clear"
-            >
+            <button onClick={handleClearHistory} className="btn btn-clear">
               Clear History
             </button>
           </div>
@@ -372,7 +362,9 @@ const BarcodeGenerator = () => {
                   <strong>{product.productName}</strong>
                   <span>{product.companyName}</span>
                   <span>${parseFloat(product.amount).toFixed(2)}</span>
-                  <span className="history-quantity">Qty: {product.printQuantity || 1}</span>
+                  <span className="history-quantity">
+                    Qty: {product.printQuantity || 1}
+                  </span>
                 </div>
                 <div className="history-barcode">{product.barcode}</div>
                 <div className="history-date">{product.date}</div>
@@ -382,8 +374,7 @@ const BarcodeGenerator = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default BarcodeGenerator
-
+export default BarcodeGenerator;
