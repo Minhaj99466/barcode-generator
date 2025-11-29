@@ -112,7 +112,7 @@ const BarcodeGenerator = () => {
               margin: 0;
               padding: 0;
               width: 38mm;
-              height: 20mm;
+              height: 25mm;
               overflow: hidden;
             }
             .barcode-print-item {
@@ -121,14 +121,21 @@ const BarcodeGenerator = () => {
               display: flex;
               flex-direction: column;
               align-items: center;
-              justify-content: center;
-              padding: 1.5mm;
+              justify-content: flex-start;
+              padding: 0;
+              margin: 0;
               background: #fff;
               page-break-after: always;
               page-break-inside: avoid;
             }
+            .barcode-header {
+              width: 100%;
+              margin: 0;
+              padding: 0;
+            }
             .barcode-header h3 {
               margin: 0;
+              padding: 0.5mm 0 0 0;
               font-size: 7pt;
               font-weight: bold;
               line-height: 1.1;
@@ -139,7 +146,8 @@ const BarcodeGenerator = () => {
             }
             .product-name {
               font-size: 6pt;
-              margin: 0.5mm 0 0 0;
+              margin: 0.3mm 0 0 0;
+              padding: 0;
               color: #333;
               line-height: 1.1;
               text-align: center;
@@ -150,15 +158,19 @@ const BarcodeGenerator = () => {
               font-size: 7pt;
               font-weight: bold;
               color: #000;
-              margin: 0.5mm 0 0 0;
+              margin: 0.3mm 0 0 0;
+              padding: 0;
               line-height: 1.1;
               text-align: center;
+              width: 100%;
             }
             .barcode-container {
               display: flex;
               justify-content: center;
               align-items: center;
               width: 100%;
+              margin: 0.5mm 0 0 0;
+              padding: 0;
             }
             .barcode-container svg {
               max-width: 100%;
@@ -168,7 +180,8 @@ const BarcodeGenerator = () => {
             .barcode-footer {
               font-size: 6pt;
               color: #666;
-              margin-top: 0.5mm;
+              margin: 0.3mm 0 0 0;
+              padding: 0;
               line-height: 1.1;
               text-align: center;
               width: 100%;
