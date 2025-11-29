@@ -155,7 +155,6 @@ const BarcodeGenerator = () => {
               text-align: center;
             }
             .barcode-container {
-              margin: 1mm 0 0 0;
               display: flex;
               justify-content: center;
               align-items: center;
