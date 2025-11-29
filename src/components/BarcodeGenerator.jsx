@@ -161,9 +161,9 @@ body {
 }
 
 .barcode-container svg {
-  width: 100%;                    /* Fit perfectly but not touch sides */
-  height: 10mm !important;       /* Taller barcode */
+  height: 14mm !important;   /* better */
 }
+
 
     </style>
   </head>
