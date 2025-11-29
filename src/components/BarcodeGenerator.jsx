@@ -131,7 +131,7 @@ const BarcodeGenerator = () => {
               margin: 0;
               font-size: 7pt;
               font-weight: bold;
-              line-height: 0.6;
+              line-height: 1.1;
               color: #000;
               text-align: center;
               word-wrap: break-word;
@@ -140,7 +140,7 @@ const BarcodeGenerator = () => {
             .product-name {
               font-size: 6pt;
               color: #333;
-              line-height: 0.6;
+                       line-height: 1.1;
               text-align: center;
               word-wrap: break-word;
               width: 100%;
