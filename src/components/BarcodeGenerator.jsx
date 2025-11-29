@@ -199,9 +199,6 @@ const BarcodeGenerator = () => {
             </div>
             <p class="product-name">${generatedBarcode.productName}</p>
             <p class="product-amount">$${parseFloat(generatedBarcode.amount).toFixed(2)}</p>
-            <div class="barcode-footer">
-              <p>${generatedBarcode.barcode}</p>
-            </div>
           </div>
         </div>
       `
